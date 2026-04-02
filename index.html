@@ -1,13 +1,140 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="src/main.jsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UnblockedHub - Play Without Limits</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .bg-zinc-950 { background-color: #09090b; }
+        .bg-zinc-900 { background-color: #18181b; }
+        .border-zinc-800 { border-color: #27272a; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #09090b; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+
+        .game-card:hover .play-icon { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-40 border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-2 cursor-pointer" onclick="showHome()">
+                    <i data-lucide="gamepad-2" class="w-8 h-8 text-indigo-500"></i>
+                    <span class="text-xl font-bold tracking-tight">UnblockedHub</span>
+                </div>
+
+                <div class="flex-1 max-w-md mx-8 hidden sm:block">
+                    <div class="relative">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500"></i>
+                        <input
+                            type="text"
+                            id="searchInput"
+                            placeholder="Search games..."
+                            class="w-full bg-zinc-900 border border-zinc-800 rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all"
+                        >
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button onclick="showHome()" class="p-2 hover:bg-zinc-800 rounded-full transition-colors">
+                        <i data-lucide="home" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Home View -->
+        <div id="homeView">
+            <header class="mb-12">
+                <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                    Play Without Limits
+                </h1>
+                <p class="text-zinc-400 text-lg max-w-2xl">
+                    A curated collection of the best unblocked games. No downloads, no signups, just instant fun.
+                </p>
+            </header>
+
+            <div id="gamesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Games will be injected here -->
+            </div>
+
+            <div id="noResults" class="hidden text-center py-20">
+                <div class="inline-flex p-4 bg-zinc-900 rounded-full mb-4">
+                    <i data-lucide="search" class="w-8 h-8 text-zinc-700"></i>
+                </div>
+                <h3 class="text-xl font-semibold">No games found</h3>
+                <p class="text-zinc-500 mt-2">Try searching for something else or browse our full collection.</p>
+                <button onclick="clearSearch()" class="mt-6 text-indigo-400 hover:text-indigo-300 font-medium">
+                    Clear search
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Player View -->
+        <div id="playerView" class="hidden space-y-4">
+            <div class="flex items-center justify-between">
+                <h2 id="gameTitle" class="text-2xl font-bold">Game Title</h2>
+                <div class="flex gap-2">
+                    <button id="externalLink" class="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors text-sm font-medium">
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                        Open in New Tab
+                    </button>
+                    <button onclick="showHome()" class="p-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="relative aspect-video w-full bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800 shadow-2xl shadow-indigo-500/10">
+                <iframe
+                    id="gameFrame"
+                    src=""
+                    class="absolute inset-0 w-full h-full border-0"
+                    allowfullscreen
+                ></iframe>
+            </div>
+            
+            <div class="p-6 bg-zinc-900/50 rounded-2xl border border-zinc-800">
+                <h3 class="text-lg font-semibold mb-2">About This Game</h3>
+                <p id="gameDescription" class="text-zinc-400 leading-relaxed"></p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-20 border-t border-zinc-800 py-12 bg-zinc-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="gamepad-2" class="w-6 h-6 text-indigo-500"></i>
+                    <span class="text-lg font-bold">UnblockedHub</span>
+                </div>
+                <div class="flex gap-8 text-sm text-zinc-500">
+                    <a href="#" class="hover:text-zinc-300 transition-colors">Terms</a>
+                    <a href="#" class="hover:text-zinc-300 transition-colors">Privacy</a>
+                    <a href="#" class="hover:text-zinc-300 transition-colors">Contact</a>
+                </div>
+                <p class="text-sm text-zinc-600">
+                    © 2026 UnblockedHub. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
 </html>
 
