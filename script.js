@@ -104,6 +104,18 @@ function playGame(game) {
     initIcons();
 }
 
+// Fullscreen functionality
+function toggleFullscreen() {
+    const frame = document.getElementById('gameFrame');
+    if (frame.requestFullscreen) {
+        frame.requestFullscreen();
+    } else if (frame.webkitRequestFullscreen) { /* Safari */
+        frame.webkitRequestFullscreen();
+    } else if (frame.msRequestFullscreen) { /* IE11 */
+        frame.msRequestFullscreen();
+    }
+}
+
 // Initial Load
 window.onload = () => {
     loadGames();
