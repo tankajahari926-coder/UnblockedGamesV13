@@ -10,5 +10,11 @@
     "title": "Snow Rider 3D",
     "thumbnail": "https://picsum.photos/seed/snowrider/300/200",
     "url": "https://www.hoodamath.com/mobile/games/snow-rider-3d/game.html?nocheckorient=1"
+  },
+  {
+    "id": "basket-random",
+    "title": "Basket Random",
+    "thumbnail": "https://picsum.photos/seed/basket/300/200",
+    "url": "/gameframe/basket-random?embed=1"
   }
 ]
